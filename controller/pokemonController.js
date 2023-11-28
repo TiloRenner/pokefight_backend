@@ -7,13 +7,14 @@ const PokemonController = {
 
     getAllPokemon: function(req,res)
     {
-
-
         res.json(pokedata)
     },
     getOnePokemon: function(req,res)
     {
+        const {id} = req.params;
+        
 
+        console.log("ID:",id)
     }
 
 
