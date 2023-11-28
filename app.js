@@ -9,9 +9,11 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
+app.use("/", IndexRouter)
 
 
 
 
 
-app.listen(8080, ()=>{console.log("Server listening on ")})
+
+app.listen(8080, ()=>{console.log("Server listening on 8080 ")})
