@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import IndexRouter from './src/router/indexRouter.js'
-import PokemonRouter from './src/router/pokemonRouter.js'
+import IndexRouter from './router/indexRouter.js'
+import PokemonRouter from './router/pokemonRouter.js'
 
 
 const app = express()
