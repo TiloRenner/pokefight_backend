@@ -5,8 +5,8 @@ const router = express.Router()
 
 
 router.get("/", PokemonController.getAllPokemon)
-router.get("/:id", PokemonController.getOnePokemon)
-router.get("/:id/:info", PokemonController.getOnePokemon)
+router.get("/:id", PokemonController.getSinglePokemon)
+router.get("/:id/:info", PokemonController.getSinglePokemon)
 
 export default router;
 
