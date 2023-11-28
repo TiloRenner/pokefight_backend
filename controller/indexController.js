@@ -5,7 +5,7 @@ const pokedata = JSON.parse(fs.readFileSync('./pokedex.json'))
 
 
 
-const IndexController = {
+export const IndexController = {
     Test: function(req,res){
         console.log("index called")
         //console.log(pokedata)
@@ -13,4 +13,4 @@ const IndexController = {
 
 };
 
-export default IndexController;
+//export default IndexController;
