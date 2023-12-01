@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended:true}))
 //app.use("/", IndexRouter)
 app.use("/pokemon", PokemonRouter)
 
-PokeDataCombiner.WriteFileTest([]);
-PokeDataCombiner.Combine();
+//PokeDataCombiner.WriteFileTest([]);
+//PokeDataCombiner.Combine();
 
 app.listen(PORT, ()=>{console.log(`Server listening on ${PORT} `)})
