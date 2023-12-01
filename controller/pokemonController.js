@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const pokedata = JSON.parse(fs.readFileSync('./pokedex.json'))
+const pokedata = JSON.parse(fs.readFileSync('./pokedex_current.json'))
 
 
 const PokemonController = {
