@@ -19,6 +19,8 @@ app.use(express.urlencoded({extended:true}))
 //app.use("/", IndexRouter)
 app.use("/pokemon", PokemonRouter)
 
+//PokeDataCombiner.WriteFileTest([]);
+//PokeDataCombiner.Combine();
 
 app.use("/auth/login",LoginRouter)
 app.use("/auth/register",RegisterRouter)

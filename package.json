@@ -9,11 +9,9 @@
     "dev": "nodemon app.js"
   },
   "nodemonConfig": {
-    "ignore": [
-      "public/data/*.json",
-      "public/javascripts/*.js",
-      "pokedex_current.json"
-    ]
+
+    "ignore": ["public/data/*.json", "public/javascripts/*.js", "pokedex_current.json"]
+
   },
   "keywords": [],
   "author": "",
