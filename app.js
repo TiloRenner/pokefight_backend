@@ -3,6 +3,8 @@ import cors from 'cors'
 import PokeDataCombiner from './utils/pokeDataCombiner.js'
 //import IndexRouter from './router/indexRouter.js'
 import PokemonRouter from './router/pokemonRouter.js'
+import LoginRouter from './router/loginRouter.js'
+import RegisterRouter from './router/registerRouter.js'
 import 'dotenv/config'
 
 const {PORT} = process.env
@@ -17,7 +19,11 @@ app.use(express.urlencoded({extended:true}))
 //app.use("/", IndexRouter)
 app.use("/pokemon", PokemonRouter)
 
+
+app.use("/auth/login",LoginRouter)
+app.use("/auth/register",RegisterRouter)
+
 //PokeDataCombiner.WriteFileTest([]);
-//PokeDataCombiner.Combine();
+//cd.PokeDataCombiner.Combine();
 
 app.listen(PORT, ()=>{console.log(`Server listening on ${PORT} `)})
