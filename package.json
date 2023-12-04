@@ -9,7 +9,11 @@
     "dev": "nodemon app.js"
   },
   "nodemonConfig": {
-    "ignore": ["public/data/*.json", "public/javascripts/*.js", "pokedex_current.json"]
+    "ignore": [
+      "public/data/*.json",
+      "public/javascripts/*.js",
+      "pokedex_current.json"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -17,7 +21,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

@@ -13,7 +13,7 @@ const PokeDataCombiner = {
         console.log(pokedata_source.length)
 
 
-        for(let i = 0; i < pokedata_source.length-800; i++ )
+        for(let i = 0; i < pokedata_source.length; i++ )
         {
             const pokemon = pokedata_source[i];
             const name = pokemon.name.english.toLowerCase()
