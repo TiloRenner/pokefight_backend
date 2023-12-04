@@ -1,9 +1,15 @@
 import User from '../models/userModel.js';
 import 'dotenv/config'
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken'
+
+
 
 
 mongoose.connect(process.env.DB_URI)
+
+const token_secret = process.env.TOKEN_SECRET;
+
 
 const LoginController = {
 
@@ -15,8 +21,14 @@ const LoginController = {
             if(matchingUser && matchingUser.length == 1)
             {            
                 console.log("Length ok",matchingUser)
-                //createUser(username,password)
-                res.json({Result: "loggedIn", username:username})
+
+                const token = generateAccessToken({username:username})
+
+                
+                console.log("Token:",token)
+                res.json(token)
+
+                //res.json({Result: "loggedIn", username:username})
             }
             else{
                 res.json({Result: "rejected", username: username})
@@ -31,6 +43,12 @@ const LoginController = {
     }
 
 
+}
+
+function generateAccessToken(username)
+{
+    console.log("start JWT SIGN")
+    return jwt.sign(username,process.env.TOKEN_SECRET,{expiresIn: '1800s'});
 }
 
 async function findUserWithPassword(username,password)
