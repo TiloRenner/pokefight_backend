@@ -5,6 +5,7 @@ import cors from 'cors'
 import PokemonRouter from './router/pokemonRouter.js'
 import LoginRouter from './router/loginRouter.js'
 import RegisterRouter from './router/registerRouter.js'
+import FightRouter from './router/fightRouter.js'
 import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 
@@ -29,6 +30,7 @@ app.use(cookieParser())
 
 //app.use("/", IndexRouter)
 app.use("/pokemon", PokemonRouter)
+app.use("/fight", FightRouter)
 
 //PokeDataCombiner.WriteFileTest([]);
 //PokeDataCombiner.Combine();
