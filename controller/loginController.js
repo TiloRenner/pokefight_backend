@@ -4,8 +4,6 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken'
 
 
-
-
 ConnectDB()
 
 
@@ -39,7 +37,7 @@ const LoginController = {
         try{
             const matchingUserWithPassword = await findUserWithPassword(username,password)
             console.log("Found",matchingUserWithPassword)
-            const token = await jwt.sign({username:username},token_secret,{expiresIn: '1800s'});
+            const token = await jwt.sign({username:username},token_secret,{expiresIn: '24h'});
             if(matchingUserWithPassword && matchingUserWithPassword.length == 1)
             {            
                 console.log("Length ok",matchingUserWithPassword)
