@@ -6,6 +6,7 @@ import PokemonRouter from './router/pokemonRouter.js'
 import LoginRouter from './router/loginRouter.js'
 import RegisterRouter from './router/registerRouter.js'
 import FightRouter from './router/fightRouter.js'
+import LeaderboardRouter from './router/leaderboardRouter.js'
 import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 
@@ -31,6 +32,7 @@ app.use(cookieParser())
 //app.use("/", IndexRouter)
 app.use("/pokemon", PokemonRouter)
 app.use("/fight", FightRouter)
+app.use("/leaderboard",LeaderboardRouter)
 
 //PokeDataCombiner.WriteFileTest([]);
 //PokeDataCombiner.Combine();
