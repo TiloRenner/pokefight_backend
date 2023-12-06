@@ -1,9 +1,27 @@
 import User from '../models/userModel.js';
 import 'dotenv/config'
 import mongoose from 'mongoose';
+import LoginController from './loginController.js';
 
-mongoose.connect(process.env.DB_URI)
 
+ConnectDB()
+
+
+async function ConnectDB(){
+
+    try{
+        mongoose.connect(process.env.DB_URI)
+        const db = mongoose.connection
+        db.on('error', console.error.bind(console, 'connection error:'))
+        db.on('disconnected',function(){console.log("Disconnected DB")})
+        db.once('open', function(){console.log('DB Connected')})
+    }
+    catch(err)
+    {
+        console.log("MongooseError:" ,err.message)
+    }
+
+}
 
 const RegisterController = {
 
@@ -13,7 +31,7 @@ const RegisterController = {
         const {username,password} = req.body
 
         try{
-            const matchingUser = await findUserWithPassword(username,password)
+            const matchingUser = await findUser(username)
             console.log(matchingUser)
             if(matchingUser && matchingUser.length == 0)
             {
@@ -21,12 +39,14 @@ const RegisterController = {
                 res.json({Result:"User Created", username: username})
             }
             else{
-                res.json({Result:"User Not Created", username: username})
+                console.log("User alread exists")
+                //res.json({Result:"User Not Created,already exists", username: username}).
+                LoginController.login(req,res)
             }
         }
         catch(err)
         {
-
+            console.log("RegisterError:", err.message)
         } 
         //res.send(`Register Route ${username}, ${password}`)
     }
@@ -48,6 +68,26 @@ async function createUser(username,password)
 
 }
 
+async function findUser(username)
+{
+    //const User = mongoose.model("User", UserSchema)
+
+    try{
+        const matchingUser = await User.find(
+            {
+                username:username,
+            }
+        ).exec()
+
+        console.log("User found:", matchingUser)
+        return matchingUser;
+    }
+    catch(err)
+    {
+        console.log("Error Getting username and password from db", err.message)
+        return null;
+    }
+}
 
 async function findUserWithPassword(username,password)
 {
