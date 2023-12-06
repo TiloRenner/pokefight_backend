@@ -1,4 +1,6 @@
 import * as fs from 'fs';
+import ComparePokemon from '../utils/comparePokemon.js';
+import MongooseUser from '../utils/mongooseUser.js';
 
 
 
@@ -6,34 +8,63 @@ const FightController = {
     fight: function (req,res){
         let {pokemon1,pokemon2,trainer1,trainer2} = req.body
 
-        if(!trainer1)
+        /*if(!trainer1)
         {
             trainer1 = "Wild Pokemon"
         }
         if(!trainer2)
         {
             trainer2 = "Wild Pokemon"
-        }
+        }*/
         const twoPokemon = createTwoPokemonWithAdjustedStats(pokemon1,pokemon2)
-        const result = comparePokemon(twoPokemon[0],twoPokemon[1])
+        const result = ComparePokemon.compare(twoPokemon[0],twoPokemon[1])
         console.log("The Winner is:" ,twoPokemon[result].name.english)
         //console.log("TwoPokemon:" ,twoPokemon)
         let responseString = {};
+        let winnerPokemon = ""
+        let winnerTrainer = ""
+        let loserPokemon = ""
+        let loserTrainer = ""
         if(result == 0)
         {
-            responseString = {
-                Winner: {pokemon: twoPokemon[0].name.english, trainer:trainer1 },
-                Loser: {pokemon: twoPokemon[1].name.english, trainer:trainer2 }
-                 }
-
+            winnerPokemon = twoPokemon[0].name.english;
+            winnerTrainer = trainer1;
+            loserPokemon = twoPokemon[1].name.english;
+            loserTrainer = trainer2;
         }
         else{
-            responseString = {
-                Winner: {pokemon: twoPokemon[1].name.english, trainer:trainer2 },
-                Loser: {pokemon: twoPokemon[0].name.english, trainer:trainer1 }
-                 }
-
+            winnerPokemon = twoPokemon[1].name.english;
+            winnerTrainer = trainer2;
+            loserPokemon = twoPokemon[0].name.english;
+            loserTrainer = trainer1;
         }
+
+
+        let winnerString = ""
+        let looserString = ""
+        if(winnerTrainer.length > 0)
+        {
+            winnerString = winnerTrainer + " helped " + winnerPokemon + " win against "
+            if(loserTrainer.length > 0)
+            {
+                winnerString = winnerString + "the " + loserPokemon + " of " + loserTrainer;
+            }
+            else{
+                winnerString = winnerString + "a wild " + loserPokemon;
+                
+            }
+            console.log(winnerString)
+
+            MongooseUser.addWinForUser(winnerTrainer,winnerString)
+            //MongooseUser.
+        }
+
+
+
+        responseString = {
+            Winner: {pokemon: winnerPokemon, trainer:winnerTrainer },
+            Loser: {pokemon: loserPokemon, trainer:loserTrainer }
+             }
         res.json({responseString})
     }
 }
