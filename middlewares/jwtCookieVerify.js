@@ -4,7 +4,8 @@ import 'dotenv/config'
 
 const jwtCookieVerify = function (req,res,next)
 {
-    console.log("Cookies:" , req.cookies)
+    if(req.cookies !== undefined) 
+    {console.log("Cookies:" , req.cookies)}
     const token = req.cookies.pokefight_token;
     if(token)
     {
