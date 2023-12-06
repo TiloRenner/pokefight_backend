@@ -14,35 +14,35 @@ const FightController = {
         {
             trainer2 = "Wild Pokemon"
         }
-
         const twoPokemon = createTwoPokemonWithAdjustedStats(pokemon1,pokemon2)
-
         const result = comparePokemon(twoPokemon[0],twoPokemon[1])
-
-        console.log("The Winner is:" ,twoPokemon[result])
-
-
-        
-
+        console.log("The Winner is:" ,twoPokemon[result].name.english)
         //console.log("TwoPokemon:" ,twoPokemon)
+        let responseString = {};
         if(result == 0)
         {
-            res.json({Winner: {pokemon: twoPokemon[0].name.english, trainer:trainer1 }})
+            responseString = {
+                Winner: {pokemon: twoPokemon[0].name.english, trainer:trainer1 },
+                Loser: {pokemon: twoPokemon[1].name.english, trainer:trainer2 }
+                 }
+
         }
         else{
-            res.json({Winner: {pokemon: twoPokemon[1].name.english, trainer:trainer2 }})
+            responseString = {
+                Winner: {pokemon: twoPokemon[1].name.english, trainer:trainer2 },
+                Loser: {pokemon: twoPokemon[0].name.english, trainer:trainer1 }
+                 }
+
         }
-
-        
-
-
+        res.json({responseString})
     }
 }
 
 function adjustPokemonBase(enemyTypes,pokemonBase)
 {
 
-    console.log("Pokemon BeforeAdjust:", pokemonBase)
+    console.log("Pokemon:", pokemonBase.name)
+    console.log("BeforeAdjust:", pokemonBase.base)
     //Check Double Damage, half defense
     enemyTypes.forEach(enemyType => {
         const weakDefense = pokemonBase.damage_relations.double_damage_from.find((type)=>{
@@ -101,7 +101,7 @@ function adjustPokemonBase(enemyTypes,pokemonBase)
             pokemonBase.base.Attack /= 4;
         } 
     });
-    console.log("Pokemon AfterAdjust:", pokemonBase)
+    console.log("AfterAdjust:", pokemonBase.base)
 
 }
 
@@ -120,7 +120,7 @@ function createTwoPokemonWithAdjustedStats(pokemon1Name,pokemon2Name){
 function getPokemonBaseByName(name)
 {
     const pokedata = JSON.parse(fs.readFileSync('./pokedex_current.json'))
-    console.log("Look for:", name)
+    //console.log("Look for:", name)
     let pokemon = pokedata.find((pokemon)=> {
         //console.log("Checking:", pokemon.name.english)
         return pokemon.name.english == name
@@ -132,17 +132,25 @@ function getPokemonBaseByName(name)
 function comparePokemon(pokemon1, pokemon2) {
     let score1 = 0;
     let score2 = 0;
-   
-    if (pokemon1.HP > pokemon2.HP) score1++;
-    if (pokemon1.Attack > pokemon2.Attack) score1++;
-    if (pokemon1.Defense > pokemon2.Defense) score1++;
-    if (pokemon1.Speed > pokemon2.Speed) score1++;
 
-    if (pokemon2.HP > pokemon1.HP) score2++;
-    if (pokemon2.Attack > pokemon1.Attack) score2++;
-    if (pokemon2.Defense > pokemon1.Defense) score2++;
-    if (pokemon2.Speed > pokemon1.Speed) score2++;
+    let luck1 = getRandomInt((pokemon1.base.Attack + pokemon1.base.Defense + pokemon1.base.HP + pokemon1.base.Speed + pokemon2.base.Attack + pokemon2.base.Defense + pokemon2.base.HP + pokemon2.base.Speed) / 5)
+    console.log(luck1)
+    let luck2 = getRandomInt((pokemon2.base.Attack + pokemon2.base.Defense + pokemon2.base.HP + pokemon2.base.Speed +pokemon1.base.Attack + pokemon1.base.Defense + pokemon1.base.HP + pokemon1.base.Speed) / 5)
+    console.log(luck2)
    
+    if (pokemon1.base.HP+luck1 > pokemon2.base.HP+luck2) score1++;
+    if (pokemon1.base.Attack+luck1 > pokemon2.base.Attack+luck2) score1++;
+    if (pokemon1.base.Defense+luck1 > pokemon2.base.Defense+luck2) score1++;
+    if (pokemon1.base.Speed+luck1 > pokemon2.base.Speed+luck2) score1++;
+
+    if (pokemon2.base.HP+luck2 > pokemon1.base.HP+luck1) score2++;
+    if (pokemon2.base.Attack+luck2 > pokemon1.base.Attack+luck1) score2++;
+    if (pokemon2.base.Defense+luck2 > pokemon1.base.Defense+luck1) score2++;
+    if (pokemon2.base.Speed+luck2 > pokemon1.base.Speed+luck1) score2++;
+   
+
+    console.log("Result: ", score1 ," vs " , score2)
+
     if (score1 > score2) {
       return 0;
     } else if (score2 > score1) {
