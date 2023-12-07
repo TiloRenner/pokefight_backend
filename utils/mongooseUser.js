@@ -38,6 +38,43 @@ const MongooseUser = {
         }
 
     },
+    findPokemonInUser: async function(username,pokemon_id)
+    {
+        //const User = mongoose.model("User", UserSchema)
+    
+        try{
+            const matchingUser = await User.find(
+                {
+                    username:username,
+                }
+            ).exec()
+    
+            console.log("User found:", matchingUser)
+
+            let matchingPokemon = null;
+
+            if(matchingUser[0].ownedPokemon)
+            {
+                matchingPokemon = matchingUser[0].ownedPokemon.find((pokemon)=> {
+
+                    console.log("Pokes:",pokemon)
+                    return pokemon_id == pokemon.id;
+                })
+                console.log("Match?", matchingPokemon)
+            }
+            else
+            {
+                console.log("No Pokemon yet:")
+            }
+
+            return matchingPokemon;
+        }
+        catch(err)
+        {
+            console.log("Error Getting username and password from db", err.message)
+            return null;
+        }
+    },
 
     findUser: async function(username)
     {
@@ -88,6 +125,20 @@ const MongooseUser = {
         try{
             await User.updateOne({username: username},
                 { $inc: {wins:1}, $push: {pastFights: {fightResult:fightresult}}}
+            )
+        }
+        catch(err)
+        {
+            console.log("Error adding Win", err.message)
+        }
+
+    },
+    addPokemonForUser: async function(username,pokemon)
+    {
+        try{
+            //Todo check if user owns Pokemon
+            await User.updateOne({username: username},
+                { $push: {ownedPokemon: pokemon}}
             )
         }
         catch(err)
