@@ -5,7 +5,7 @@ import MongooseUser from '../utils/mongooseUser.js';
 
 const router = express.Router()
 
-router.get("/",jwtCookieVerify,  async (req,res)=> {
+router.post("/",jwtCookieVerify,  async (req,res)=> {
 
     const username = req.user.username;
     console.log("User:", req.user)
