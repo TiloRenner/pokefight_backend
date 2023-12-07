@@ -51,6 +51,7 @@ const FightController = {
             }
             else{
                 winnerString = winnerString + "a wild " + loserPokemon;
+                //Sieg gegen wildes Pokemon, 50% Chance auf fangen
                 
             }
             console.log(winnerString)

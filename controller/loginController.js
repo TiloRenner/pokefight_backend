@@ -26,7 +26,7 @@ const LoginController = {
 
                 //const token = await generateAccessToken({username:username})
                 console.log("SendToken:",token)
-                res.cookie("pokefight_token", token, {httpOnly: true}).json({msg:"loggedIn"})
+                res.cookie("pokefight_token", token, {httpOnly: true}).json({msg:"loggedIn", login_token:token})
             }
             else{
                 //res.json({Result: "rejected", username: username})
