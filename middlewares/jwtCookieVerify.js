@@ -23,7 +23,23 @@ const jwtCookieVerify = function (req,res,next)
         }
     }
     else{
-        res.send({msg:"access denied, please login"})
+        //Check if token in body
+        if(req.body)
+        {
+            if(req.body.login_token)
+            {
+                //Login Token exists
+            }
+            else
+            {
+                
+            }
+        }
+        else
+        {
+            res.send({msg:"access denied, please login"})
+        }
+
     }
 }
 
