@@ -20,7 +20,7 @@ const LoginController = {
             const matchingUserWithPassword = await MongooseUser.findUserWithPassword(username,password)
             console.log("Found",matchingUserWithPassword)
             const token = await jwt.sign({username:username},token_secret,{expiresIn: '24h'});
-            if(matchingUserWithPassword && matchingUserWithPassword.length == 1)
+            if(matchingUserWithPassword && matchingUserWithPassword.length >= 1)
             {            
                 console.log("Length ok",matchingUserWithPassword)
 
@@ -30,8 +30,9 @@ const LoginController = {
             }
             else{
                 //res.json({Result: "rejected", username: username})
-                const userExists = MongooseUser.findUser(username)
-                if(userExists == userExists.length == 1)
+                const userExists = await MongooseUser.findUser(username)
+                console.log("UserExists at all:", userExists)
+                if(userExists && userExists.length >= 1)
                 {
                     res.status(403).json({msg: "invalid Login"})
                 }
