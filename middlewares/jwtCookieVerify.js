@@ -28,11 +28,14 @@ const jwtCookieVerify = function (req,res,next)
         {
             if(req.body.login_token)
             {
+                const login_token = req.body.token;
+                const user = jwt.verify(login_token,process.env.TOKEN_SECRET);
+                req.user = user
                 //Login Token exists
             }
             else
             {
-                
+                res.send({msg:"access denied, please login"})
             }
         }
         else
