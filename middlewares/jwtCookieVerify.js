@@ -7,8 +7,10 @@ const jwtCookieVerify = function (req,res,next)
     if(req.cookies !== undefined) 
     {console.log("Cookies:" , req.cookies)}
     const token = req.cookies.pokefight_token;
+    console.log("Token:",token)
     if(token)
     {
+        console.log("Token ist there from cookie")
         try{
             const user = jwt.verify(token,process.env.TOKEN_SECRET);
             req.user = user
@@ -26,12 +28,14 @@ const jwtCookieVerify = function (req,res,next)
         //Check if token in body
         if(req.body)
         {
+            console.log("Body is here:", req.body)
             if(req.body.login_token)
             {
-                const login_token = req.body.token;
+                const login_token = req.body.login_token;
                 const user = jwt.verify(login_token,process.env.TOKEN_SECRET);
                 req.user = user
                 //Login Token exists
+                next();
             }
             else
             {

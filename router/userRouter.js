@@ -11,7 +11,7 @@ router.post("/",jwtCookieVerify,  async (req,res)=> {
     console.log("User:", req.user)
     const userExists = await MongooseUser.findUser(username)
     userExists[0].password =""
-    console.log("userResult: ", userExists)
+    console.log("userResult: ", userExists[0])
     res.json(userExists[0])
 
 
