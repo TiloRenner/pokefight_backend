@@ -1,11 +1,12 @@
 import * as fs from 'fs';
 import ComparePokemon from '../utils/comparePokemon.js';
 import MongooseUser from '../utils/mongooseUser.js';
+import PokemonController from './pokemonController.js';
 
 
 
 const FightController = {
-    fight: function (req,res){
+    fight: async function (req,res){
         let {pokemon1,pokemon2,trainer1,trainer2} = req.body
 
         /*if(!trainer1)
@@ -41,30 +42,58 @@ const FightController = {
 
 
         let winnerString = ""
-        let looserString = ""
+        let loserString = ""
+        let tryCatchString = "";
+        let catchResultString = "";
         if(winnerTrainer.length > 0)
         {
             winnerString = winnerTrainer + " helped " + winnerPokemon + " win against "
             if(loserTrainer.length > 0)
             {
+
                 winnerString = winnerString + "the " + loserPokemon + " of " + loserTrainer;
+
+
             }
             else{
                 winnerString = winnerString + "a wild " + loserPokemon;
-                //Sieg gegen wildes Pokemon, 50% Chance auf fangen
+                //Sieg gegen wildes Pokemon, 50% Chance auf fangen wenn nicht vorhanden
+                const hasPokemon = await MongooseUser.findPokemonInUser(winnerTrainer,1)
+                if(hasPokemon)
+                {
+                    tryCatchString= winnerTrainer + " already owns a " + loserPokemon;
+                }
+                else
+                {
+                    tryCatchString= winnerTrainer + " tries to catch " + loserPokemon;
+                    const catchSuccess = getRandomInt(2)
+                    if(catchSuccess == 1)
+                    {
+                        PokemonController.addPokemonToUser(getPokemonIDByName(loserPokemon), winnerTrainer)
+                        //MongooseUser.addPokemonForUser(winnerTrainer)
+                        catchResultString = winnerTrainer + " has caught a " + loserPokemon;
+
+                    }
+                    else
+                    {
+                        catchResultString = loserPokemon + "got away";
+                    }
+                }
                 
             }
             console.log(winnerString)
 
             MongooseUser.addWinForUser(winnerTrainer,winnerString)
-            //MongooseUser.
+            
         }
 
 
 
         responseString = {
             Winner: {pokemon: winnerPokemon, trainer:winnerTrainer },
-            Loser: {pokemon: loserPokemon, trainer:loserTrainer }
+            Loser: {pokemon: loserPokemon, trainer:loserTrainer },
+            CatchAttempt: tryCatchString,
+            CatchResult: catchResultString
              }
         res.json({responseString})
     }
@@ -159,6 +188,20 @@ function getPokemonBaseByName(name)
     })
     //console.log("found:", pokemon)
     return pokemon
+}
+
+function getPokemonIDByName(name)
+{
+    const pokedata = JSON.parse(fs.readFileSync('./pokedex_current.json'))
+    //console.log("Look for:", name)
+    let pokemon = pokedata.find((pokemon)=> {
+        //console.log("Checking:", pokemon.name.english)
+        return pokemon.name.english == name
+    })
+    //console.log("found:", pokemon)
+    if(pokemon) return pokemon.id;
+
+    return null;
 }
 
 function comparePokemon(pokemon1, pokemon2) {

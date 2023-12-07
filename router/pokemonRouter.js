@@ -10,6 +10,7 @@ router.get("/check/",jwtCookieVerify, (req,res)=> {
     console.log("User in token:", req.user)
     res.send("Reached Protected Route?")
 })
+router.post("/addToUser",jwtCookieVerify, PokemonController.addPokemon)
 router.get("/", PokemonController.getAllPokemon)
 router.get("/:id", PokemonController.getSinglePokemon)
 router.get("/:id/:info", PokemonController.getSinglePokemon)
