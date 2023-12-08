@@ -147,6 +147,7 @@ function createUserPokemon(pokemon)
       })
 
       userPokemon.damage_relations = pokemon.damage_relations
+      userPokemon.sprites = pokemon.sprites
       console.log(userPokemon)
 
       return userPokemon;
