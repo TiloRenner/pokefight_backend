@@ -3,6 +3,7 @@ import 'dotenv/config'
 //import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken'
 import MongooseUser from '../utils/mongooseUser.js';
+import PokemonController from './pokemonController.js';
 
 
 MongooseUser.ConnectDB()
@@ -34,10 +35,14 @@ const LoginController = {
                 console.log("UserExists at all:", userExists)
                 if(userExists && userExists.length >= 1)
                 {
+                    console.log("User already there")
                     res.status(403).json({msg: "invalid Login"})
                 }
                 else{
-                    MongooseUser.createUserWithPassword(username,password)
+                    console.log("Going to create User")
+                    await MongooseUser.createUserWithPassword(username,password)
+                    console.log("Going to add Pokemon");
+                    PokemonController.addPokemonToUser(25,username)
                     res.cookie("pokefight_token", token, {httpOnly: true}).json({Result:"User Created and Logged in", username: username})
                 }
             }
