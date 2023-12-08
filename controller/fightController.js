@@ -76,7 +76,7 @@ const FightController = {
                     }
                     else
                     {
-                        catchResultString = loserPokemon + "got away";
+                        catchResultString = loserPokemon + " got away";
                     }
                 }
                 
