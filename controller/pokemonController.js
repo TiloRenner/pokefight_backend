@@ -97,6 +97,7 @@ const PokemonController = {
         }
     },
     addPokemonToUser(id,username){
+        console.log("Add " + id + " to " +username)
         addPokemonToUser(id,username)
     }
 
@@ -108,6 +109,7 @@ const PokemonController = {
 
 function addPokemonToUser (id,username) {
 
+    console.log("Really Add " + id + " to " +username)
         
     let pokemon = pokedata.find(
         (pokemon => pokemon.id == id)
