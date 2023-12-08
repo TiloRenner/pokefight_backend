@@ -3,6 +3,7 @@ import 'dotenv/config'
 //import mongoose from 'mongoose';
 import LoginController from './loginController.js';
 import MongooseUser from '../utils/mongooseUser.js';
+import PokemonController from './pokemonController.js';
 
 MongooseUser.ConnectDB()
 
@@ -19,6 +20,7 @@ const RegisterController = {
             if(matchingUser && matchingUser.length == 0)
             {
                 MongooseUser.createUserWithPassword(username,password)
+                PokemonController.addPokemonToUser(25,username)
 
                 //res.json({Result:"User Created", username: username})
                 req.body.pokeUserJustRegistered = true;
